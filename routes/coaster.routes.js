@@ -30,7 +30,7 @@ router.post('/new', (req, res) => {
     Coaster.create({ name, description, length, inversions, active })
         .then(newCoaster => {
             console.log("New coaster created", newCoaster)
-            res.redirect("/")
+            res.redirect("coasters")
         })
         .catch(err => console.log("Error creating new coaster", err))
 
@@ -39,20 +39,11 @@ router.post('/new', (req, res) => {
 
 
 
-
-router.get('/:id', (req, res) => {
-    Coaster.findById(req.params.id)
-        .populate('park')
-        .then(oneCoaster => res.render('coasters/coaster-details', oneCoaster))
-        .catch(err => console.log('Error while showing coaster', err))
-})
-
-
 router.post('/:id/delete', (req, res) => {
 
     Coaster
         .findByIdAndRemove(req.params.id)
-        .then(res.redirect('/'))
+        .then(res.redirect('/coasters'))
         .catch(err => console.log("Error while deleting coaster", err))
 })
 
@@ -68,22 +59,28 @@ router.get('/:id/edit', (req, res) => {
         .then(coasters => {
             res.render('coasters/edit-coaster', { coaster: coasters[0], park: coasters[1] })
         })
+
         .catch(err => console.log("Error en la BBDD", err))
 })
 
 
 
 
-router.post('/:id', (req, res) => {
+router.post('/:id/edit', (req, res) => {
     const { name, description, length, inversions, active } = req.body
 
     Coaster
         .findByIdAndUpdate(req.params.id, { name, description, length, inversions, active }, { new: true })
-        .then(() => res.redirect("/")
-            .catch(err => console.log("Error editing coaster", err)))
+        .then(() => res.redirect('/coasters'))
+        .catch(err => console.log("Error editing coaster", err))
 
 })
 
-
+router.get('/:id', (req, res) => {
+    Coaster.findById(req.params.id)
+        .populate('park')
+        .then(oneCoaster => res.render('coasters/coaster-details', oneCoaster))
+        .catch(err => console.log('Error while showing coaster', err))
+})
 
 module.exports = router

@@ -61,16 +61,15 @@ router.post('/:id/delete', (req, res) => {
 
 
 router.get('/:id/edit', (req, res) => {
-    Coaster
-        .findById(req.params.id)
-        .then(theCoaster => res.render('coasters/edit-coaster', theCoaster)
-            .catch(err => console.log('Error while editing', err)))
-    Park
-        .find()
-        .then(allParks => res.render('coasters/edit-coaster', { allParks }))
-        .catch(err => console.log("Error in BBDD", err))
-})
+    const coasterId = Coaster.findById(req.params.id)
+    const allParks = Park.find()
 
+    Promise.all([coasterId, allParks])
+        .then(coasters => {
+            res.render('coasters/edit-coaster', { coaster: coasters[0], park: coasters[1] })
+        })
+        .catch(err => console.log("Error en la BBDD", err))
+})
 
 
 

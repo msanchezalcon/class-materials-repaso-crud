@@ -9,6 +9,8 @@
         <div class="col-md-6">
 
             <form action="/coasters/{{_id}}" method="post">
+
+                {{#with coaster}}
                 <div class="form-group">
                     <label for="name-input">Nombre</label>
                     <input name="name" type="text" class="form-control" id="name-input">
@@ -25,12 +27,15 @@
                     <label for="length-input">Longitud</label>
                     <input name="length" type="number" class="form-control" id="length-input">
                 </div>
+                {{/with}}
+
                 <div class="form-group">
                     <label for="park-list">Parque en el que se encuentra:</label>
                     <select name="park" class="form-control" id="park-list">
-                        {{#each allParks}}
+                        <option>Seleccionar</option>
+                        {{#each park}}
                         <option value="{{_id}}">{{name}}</option>
-                        {{/each}}
+                        {{/each }}
                     </select>
                 </div>
 

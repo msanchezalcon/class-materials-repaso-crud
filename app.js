@@ -10,9 +10,15 @@ require('./configs/preprocessor.config')(app)
 require('./configs/locals.config')(app)
 require('./configs/debug.config')
 
+
+
 // Base URL's
-app.use('/', require('./routes/index.routes'))
-app.use('/coasters', require('./routes/coaster.routes'))
-app.use('/parks', require('./routes/park.routes'))
+require('./routes')(app) //siempre busca index
+
+// app.use('/', require('./routes/base.routes'))
+// app.use('/', require('./routes/coaster.routes'))
+// app.use('/', require('./routes/park.routes'))
+// app.use('/', require('./routes/index'))
+
 
 module.exports = app
